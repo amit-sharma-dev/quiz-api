@@ -23,4 +23,4 @@ Simple basic mvc structure with nodejs and express framework.
 - Copy the .env.example to your own file: `cp .env.example .env`
 - Set the `DB_HOST` in `.env`
 - Start the server: `node app.js`
-- View in post: <http://localhost:8080/api>
+- View in postman: <http://localhost:8080/api>
