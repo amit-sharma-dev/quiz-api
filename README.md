@@ -1,5 +1,5 @@
 # node-express-mvc
-Simple basic mvc structure with nodejs and express framework
+Simple basic mvc structure with nodejs and express framework.
 # Features
 1. jwt authentication
 2. Routing
