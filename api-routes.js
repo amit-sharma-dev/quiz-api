@@ -5,7 +5,7 @@ var VerifyToken = require('./middleware/VerifyToken');
 router.get('/', function (req, res) {
     res.json({
         status: 'API Its Working',
-        message: 'Welcome to nodejs REST',
+        message: 'Welcome to nodejs MVC framework',
     });
 });
 
