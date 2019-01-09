@@ -10,6 +10,7 @@ Simple basic mvc structure with nodejs and express framework.
 7. Envoirment variable supportable
 8. Basic crud example
 9. Mongo database support
+10. Mongo database seeder
 
 ## Requirements
 
