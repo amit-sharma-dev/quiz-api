@@ -1,4 +1,5 @@
 // Import Mongoose
+require('dotenv').config();
 let mongoose = require('mongoose');
 mongoose.connect("mongodb://" + process.env.DB_HOST + "/" + process.env.DB_DATABASE, {
     useNewUrlParser: true
