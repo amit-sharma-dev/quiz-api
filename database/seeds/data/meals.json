@@ -1,0 +1,11 @@
+[{
+    "state": "New Delhi",
+    "data": {
+        "test": "test"
+    }
+}, {
+    "state": "Mumbai",
+    "data": {
+        "test2": "test2"
+    }
+}]
