@@ -1,6 +1,6 @@
 // Initialize express router
 let router = require('express').Router();
-var VerifyToken = require('./middleware/VerifyToken');
+var VerifyToken = require('../middleware/VerifyToken');
 // Set default API response
 router.get('/', function (req, res) {
     res.json({
@@ -10,8 +10,8 @@ router.get('/', function (req, res) {
 });
 
 // Import Controllers
-var MealController = require('./controllers/MealController');
-var AuthController = require('./controllers/auth/AuthController');
+var MealController = require('../controllers/MealController');
+var AuthController = require('../controllers/auth/AuthController');
 
 // add middleware
 router.use('/auth/me', VerifyToken);

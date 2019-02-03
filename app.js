@@ -7,7 +7,7 @@ require('dotenv').config();
 // Setup server port
 let port = process.env.PORT || 8080;
 // Import routes
-let apiRoutes = require("./api-routes");
+let apiRoutes = require("./routes/api");
 // Import Body parser
 let bodyParser = require('body-parser');
 // Import Mongoose
