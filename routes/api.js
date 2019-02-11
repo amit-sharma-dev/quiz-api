@@ -13,6 +13,21 @@ router.get('/', function (req, res) {
 var MealController = require('../controllers/MealController');
 var AuthController = require('../controllers/auth/AuthController');
 
+router.use(function(req, res, next) {
+  // Enable CORS
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+
+  if (0 === Object.keys(req.body).length) {
+      return res.status(422).send({status: false, message : 'Invalid Payload.'});
+  }
+
+  next()
+});
+
 // add middleware
 router.use('/auth/me', VerifyToken);
 router.use('/auth/logout', VerifyToken);
