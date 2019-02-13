@@ -8,6 +8,7 @@ require('dotenv').config();
 let port = process.env.PORT || 8080;
 // Import routes
 let apiRoutes = require("./routes/api");
+let webRoutes = require("./routes/web");
 // Import Body parser
 let bodyParser = require('body-parser');
 // Import Mongoose
@@ -19,6 +20,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// set view engine
+app.set('views', './views');
+app.set('view engine', 'ejs');
 
 // Connect to Mongoose and set connection variable
 mongoose.connect("mongodb://" + process.env.DB_HOST + "/" + process.env.DB_DATABASE, {
@@ -27,12 +31,15 @@ mongoose.connect("mongodb://" + process.env.DB_HOST + "/" + process.env.DB_DATAB
 
 // Use Api routes in the App
 app.use('/api', apiRoutes);
+// Use Web routes in the App
+app.use('/', webRoutes);
 
 // Send message for default URL
 //app.get('/', (req, res) => res.send('Hello World with Express'));
 // Launch app to listen to specified port
 app.listen(port, function () {
     console.log("Running app on port " + port);
+    console.log("open on browser : http://localhost:" + port);
 });
 
 
