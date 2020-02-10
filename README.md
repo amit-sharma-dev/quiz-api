@@ -1,16 +1,12 @@
-# node-express-mvc
-Simple basic mvc structure with nodejs and express framework.
+# Online quiz organizer
+Api for Quiz app
 # Features
-1. jwt authentication
-2. Routing
-3. Middleware
-4. Controllers
-5. Models
-6. Configuration
-7. Envoirment variable support
-8. Basic crud example
-9. Mongo database support
-10. Mongo database seeder
+1. User base access model
+2. User Access control
+3. Multiple choice question
+4. Instant result
+5. Report filter and download
+6. Image upload option
 
 ## Requirements
 
