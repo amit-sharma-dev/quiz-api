@@ -21,9 +21,9 @@ router.use(function(req, res, next) {
     'Origin, X-Requested-With, Content-Type, Accept'
   );
 
-  if (0 === Object.keys(req.body).length) {
-      return res.status(422).send({status: false, message : 'Invalid Payload.'});
-  }
+//   if (0 === Object.keys(req.body).length) {
+//       return res.status(422).send({status: false, message : 'Invalid Payload.'});
+//   }
 
   next()
 });
@@ -48,7 +48,7 @@ router.route('/meals/:meal_id')
 router.route('/auth/register').post(AuthController.register);
 router.route('/auth/login').post(AuthController.login);
 router.route('/auth/me').get(AuthController.me);
-router.route('/auth/logout').get(AuthController.me);
+router.route('/auth/logout').get(AuthController.logout);
 
 // Export API routes
 module.exports = router;
