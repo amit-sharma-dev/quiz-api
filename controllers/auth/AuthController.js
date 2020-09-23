@@ -29,7 +29,7 @@ exports.me = function (req, res, next) {
     if (err) return res.status(500).send("There was a problem finding the user.");
     if (!user) return res.status(404).send({ status: false, message: "No user found." });
 
-    res.status(200).send({ status: true, data: user, token: token });
+    res.status(200).send({ status: true, data: user});
   });
 };
 
