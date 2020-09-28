@@ -1,7 +1,7 @@
 const { Joi } = require('express-validation');
 
 module.exports = {
-    'register': {
+    'create': {
         body: Joi.object({
             email: Joi.when('type', { is: 'email', then: Joi.string().email({ minDomainSegments: 2 }).required(), otherwise: Joi.forbidden() }),
             password: Joi.string()

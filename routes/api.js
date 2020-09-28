@@ -3,6 +3,7 @@ let router = require('express').Router();
 const { validate, Joi } = require('express-validation');
 var VerifyToken = require('../middleware/VerifyToken');
 const questionValidate = require('../validator/questions');
+const userValidate = require('../validator/users');
 
 // Set default API response
 router.get('/', function (req, res) {
@@ -14,6 +15,7 @@ router.get('/', function (req, res) {
 
 // Import Controllers
 var MealController = require('../controllers/MealController');
+var QuestionController = require('../controllers/QuestionController');
 var AuthController = require('../controllers/auth/AuthController');
 
 router.use(function (req, res, next) {
@@ -47,9 +49,12 @@ router.route('/meals/:meal_id')
   .put(MealController.update)
   .delete(MealController.delete);
 
+router.route('/question', validate(questionValidate.create))
+  .post(MealController.new);
+
 // auth routes
-router.route('/auth/register', validate(questionValidate.register)).post(AuthController.register);
-router.route('/auth/login').post(AuthController.login);
+router.route('/auth/register', validate(userValidate.register)).post(AuthController.register);
+router.route('/auth/login', validate(userValidate.login)).post(AuthController.login);
 router.route('/auth/me').get(AuthController.me);
 router.route('/auth/logout').get(AuthController.logout);
 
