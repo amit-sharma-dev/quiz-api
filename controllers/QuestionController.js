@@ -1,6 +1,9 @@
-const Questions = require('../models/Questions');
-
 Questions = require('../models/Questions');
+const response = require('../helpers/response');
+const winston = require('winston');
+const { infoLogConfig } = require('../config/log').winston;
+const logger = winston.createLogger(infoLogConfig);
+const config = require('../config/config');
 
 exports.new = function (req, res) {
     let questions = new Questions();
@@ -10,11 +13,11 @@ exports.new = function (req, res) {
     questions.correct = req.body.correct;
     // save the mealRate and check for errors
     questions.save(function (err) {
-        if (err)
-            res.json(err);
-        res.json({
-            message: 'New questions created!',
-            data: mealRate
-        });
+        if (err) {
+            logger.error(err);
+            return response.sendInternalServerError(res, err);
+        }
+
+        return response.sendCreated(res, {}, res.__('question.created'));
     });
 };

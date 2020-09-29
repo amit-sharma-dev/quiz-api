@@ -50,7 +50,7 @@ router.route('/meals/:meal_id')
   .delete(MealController.delete);
 
 router.route('/question', validate(questionValidate.create))
-  .post(MealController.new);
+  .post(QuestionController.new);
 
 // auth routes
 router.route('/auth/register', validate(userValidate.register)).post(AuthController.register);
