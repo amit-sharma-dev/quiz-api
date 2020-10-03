@@ -5,33 +5,10 @@ var VerifyToken = require('../middleware/VerifyToken');
 const questionValidate = require('../validator/questions');
 const userValidate = require('../validator/users');
 
-// Set default API response
-router.get('/', function (req, res) {
-  res.json({
-    status: 'API Its Working',
-    message: 'Welcome to nodejs MVC framework',
-  });
-});
-
 // Import Controllers
 var MealController = require('../controllers/MealController');
 var QuestionController = require('../controllers/QuestionController');
 var AuthController = require('../controllers/auth/AuthController');
-
-router.use(function (req, res, next) {
-  // Enable CORS
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-
-  //   if (0 === Object.keys(req.body).length) {
-  //       return res.status(422).send({status: false, message : 'Invalid Payload.'});
-  //   }
-
-  next()
-});
 
 // add middleware
 router.use('/auth/me', VerifyToken);

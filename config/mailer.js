@@ -1,6 +1,6 @@
 const nodeMailer = require('nodemailer');
 require('dotenv').config();
-const config = require('../config/email');
+const config = require('./email');
 
 module.exports.SMTPTransport = nodeMailer.createTransport({
     host: config.smtp_service_host,

@@ -1,60 +1,84 @@
-// Import express
-let express = require('express');
-// Initialize the app
-let app = express();
-// Import config
-require('dotenv').config();
-// Setup server port
-let port = process.env.PORT || 8080;
-// Import routes
-let apiRoutes = require("./routes/api");
-let webRoutes = require("./routes/web");
-// Import Body parser
-let bodyParser = require('body-parser');
-// Import Mongoose
-let mongoose = require('mongoose');
-const mkdirp = require('mkdirp');
-let multer = require('multer');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const { ValidationError } = require('express-validation');
+const winston = require('./config/winston');
+const moment = require('moment');
+const i18n = require('./config/lang');
 
-// Configure bodyparser to handle post requests
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
-// app.use(express.static('uploads'));
-// set view engine
-app.set('views', './views');
-app.set('view engine', 'ejs');
-// multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         const dir = '/uploads/';
-//         mkdirp(dir, err => cb(err, dir))
-//     }
-// });
 
-app.options("/*", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, X-CSRF-TOKEN');
-    res.sendStatus(200);
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swaggerOptions = require("./config/swagger");
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+var indexRouter = require('./routes/index');
+
+var app = express();
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
+app.use(logger('combined', { stream: winston.stream }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+//add cors to headers and add a unique key to request.
+app.use(function (req, res, next) {
+    //allow cors headers in response
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Accept-Language, Authorization");
+    //add a unique key in res as request_id.
+    res.request_id = process.env.ENVIRONMENT + '.' + process.env.SERVER_ID + '.' + process.pid + '.' + moment().unix() + '.' + Math.random().toString(36).replace(/[^a-zA-Z]+/g, '').substr(0, 5);
+    next();
+});
+//add middleware to get Accept-Language and change locale
+app.use(i18n);
+
+app.use('/', indexRouter);
+
+app.use(function (err, req, res, next) {
+    if (err instanceof ValidationError) {
+        return res.status(err.statusCode).json({
+            "status": false,
+            "status_code": err.statusCode,
+            "message": res.__('validation_error'),
+            "error": err.details,
+            "request_id": res.request_id
+        })
+    }
+    return res.status(500).json()
 });
 
-// Connect to Mongoose and set connection variable
-mongoose.connect("mongodb://" + process.env.DB_HOST + "/" + process.env.DB_DATABASE, {
-    useNewUrlParser: true
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    return res.status(404).json({
+        "status": false,
+        "status_code": 404,
+        "message": res.__('not_found'),
+        "error": {},
+        "request_id": res.request_id
+    })
+    //next(createError(404));
 });
 
-// Use Api routes in the App
-app.use('/api/v1', apiRoutes);
-// Use Web routes in the App
-app.use('/', webRoutes);
-
-// Send message for default URL
-//app.get('/', (req, res) => res.send('Hello World with Express'));
-// Launch app to listen to specified port
-app.listen(port, function () {
-    console.log("Running app on port " + port);
-    console.log("open on browser : http://localhost:" + port);
+// error handler
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // winston logging
+    winston.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
-
+module.exports = app;
