@@ -13,15 +13,15 @@ var QuestionController = require('../controllers/QuestionController');
  *    consumes:
  *      - application/json
  *    parameters:
+ *      - in: header
+ *        name: Authorization
  *      - in: body
  *        quetion: body
  *        required: true
  *        description: Question create Payload
- *        schema:
- *            $ref: '#/definitions/Question'
  *    responses:
  *      '201':
- *        description: loggedIn
+ *        description: Question created successfully
  */
 router.route('/', [VerifyToken, validate(questionValidate.create)])
     .post(QuestionController.new);
