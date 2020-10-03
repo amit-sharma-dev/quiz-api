@@ -6,8 +6,8 @@ module.exports = {
             description: "Quiz API Documentation",
             version: '1.0.0', // Version (required)
             contact: {
-                name: "Botsup Support",
-                email: "support@botsup.io"
+                name: "Quiz Support",
+                email: "support@quiz.com"
             },
             // license: {
             //   name: "License",
