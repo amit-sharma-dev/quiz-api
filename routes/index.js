@@ -8,10 +8,10 @@ router.get('/', function (req, res, next) {
 
 /* questions routes */
 const questionRouter = require('./questions');
-router.use('/api/question', questionRouter);
+router.use('/api/v1/question', questionRouter);
 
 const authRouter = require('./auth');
-router.use('/api/auth', authRouter);
+router.use('/api/v1/auth', authRouter);
 
 
 module.exports = router;

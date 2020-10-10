@@ -45,5 +45,6 @@
     "validation.string.uri": "%s must be a valid uri",
     "validation.array.base": "%s must be an array",
     "validation.object.base": "%s must be an object",
-    "question.created": "Question created successfully"
+    "question.created": "Question created successfully",
+    "question.find": "Question retrieved successfully"
 }

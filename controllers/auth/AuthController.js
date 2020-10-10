@@ -29,19 +29,19 @@ exports.me = function (req, res, next) {
     if (err) return res.status(500).send("There was a problem finding the user.");
     if (!user) return res.status(404).send({ status: false, message: "No user found." });
 
-    res.status(200).send({ status: true, data: user});
+    res.status(200).send({ status: true, data: user });
   });
 };
 
 exports.login = function (req, res) {
+  console.log(req.body.email);
   User.findOne({ email: req.body.email }, function (err, user) {
-    console.log(req.body.email);
     if (err) return res.status(500).send({ status: false, message: 'Error on the server.' });
     if (!user) return res.status(404).send({ status: false, message: 'No user found.' });
     var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!passwordIsValid) return res.status(401).send({ status: false, token: null });
+    if (!passwordIsValid) return res.status(401).send({ status: false, message: 'Wrong password', token: null });
     var token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
+      expiresIn: config.jwt_expire_time // expires in 24 hours
     });
     res.status(200).send({ status: true, data: user, token: token });
   });

@@ -3,8 +3,7 @@ const router = express.Router();
 const { validate, Joi } = require('express-validation');
 var VerifyToken = require('../middleware/VerifyToken');
 const questionValidate = require('../validator/questions');
-
-var QuestionController = require('../controllers/QuestionController');
+const QuestionController = require('../controllers/QuestionController');
 
 /**
  * @swagger
@@ -26,5 +25,6 @@ var QuestionController = require('../controllers/QuestionController');
 router.route('/', [VerifyToken, validate(questionValidate.create)])
     .post(QuestionController.new);
 
+router.get('/', [VerifyToken], QuestionController.getAll);
 
 module.exports = router;
