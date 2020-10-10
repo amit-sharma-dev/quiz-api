@@ -27,4 +27,6 @@ router.route('/', [VerifyToken, validate(questionValidate.create)])
 
 router.get('/', [VerifyToken], QuestionController.getAll);
 
+router.get('/:question_id', [VerifyToken], QuestionController.getOne);
+
 module.exports = router;

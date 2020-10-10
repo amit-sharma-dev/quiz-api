@@ -11,7 +11,7 @@ exports.new = function (req, res) {
     questions.options = req.body.options;
     questions.category = req.body.category;
     questions.correct = req.body.correct;
-    // save the mealRate and check for errors
+    
     questions.save(function (err) {
         if (err) {
             logger.error(err);
@@ -33,5 +33,18 @@ exports.getAll = function (req, res) {
     }).catch(error => {
         logger.info(error);
         return response.sendInternalServerError(res, error);
+    });
+};
+
+exports.getOne = function (req, res) {
+    console.log('kkkkkkkk');
+    const question_id = req.params.question_id;
+    Questions.findOne({ _id: question_id }, function (err, question) {
+        if (err) {
+            logger.error(err);
+            return response.sendInternalServerError(res, err);
+        }
+
+        return response.sendAccepted(res, question, res.__('question.find'));
     });
 };
